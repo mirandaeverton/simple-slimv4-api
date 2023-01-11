@@ -44,10 +44,8 @@ class UserController
             $data = json_encode(array('message' => 'No Users Found'));
             $status = 404;
         }
-        $this->response->getBody()->write($data);
-        return $this->response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus($status);
+        
+        return $this->makeResponse($data, $status);
     }
 
     public function getSingle()
@@ -79,10 +77,7 @@ class UserController
             $data = json_encode(array('message' => "User With id {$this->user->id} Not Found"));
             $status = 404;
         }
-        $this->response->getBody()->write($data);
-        return $this->response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus($status);
+        return $this->makeResponse($data, $status);
     }
 
     public function create()
@@ -105,10 +100,7 @@ class UserController
             );
             $status = 400;
         }
-        $this->response->getBody()->write($data);
-        return $this->response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus($status);
+        return $this->makeResponse($data, $status);
     }
 
     public function update()
@@ -131,10 +123,7 @@ class UserController
             );
             $status = 400;
         }
-        $this->response->getBody()->write($data);
-        return $this->response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus($status);
+        return $this->makeResponse($data, $status);
     }
 
     public function delete()
@@ -152,6 +141,10 @@ class UserController
             );
             $status = 400;
         }
+        return $this->makeResponse($data, $status);
+    }
+
+    private function makeResponse($data, $status) {
         $this->response->getBody()->write($data);
         return $this->response
                     ->withHeader('Content-Type', 'application/json')
