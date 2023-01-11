@@ -46,10 +46,7 @@ class PostController
             $data = json_encode(array('message' => 'No Posts Found'));
             $status = 404;
         }
-        $this->response->getBody()->write($data);
-        return $this->response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus($status);
+        return $this->makeResponse($data, $status);
     }
 
     public function getSingle()
@@ -83,10 +80,7 @@ class PostController
             $data = json_encode(array('message' => "Post With id {$this->post->id} Not Found"));
             $status = 404;
         }
-        $this->response->getBody()->write($data);
-        return $this->response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus($status);
+        return $this->makeResponse($data, $status);
     }
 
     public function create()
@@ -109,10 +103,7 @@ class PostController
             );
             $status = 400;
         }
-        $this->response->getBody()->write($data);
-        return $this->response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus($status);
+        return $this->makeResponse($data, $status);
     }
 
     public function update()
@@ -135,10 +126,7 @@ class PostController
             );
             $status = 400;
         }
-        $this->response->getBody()->write($data);
-        return $this->response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus($status);
+        return $this->makeResponse($data, $status);
     }
 
     public function delete()
@@ -156,6 +144,10 @@ class PostController
             );
             $status = 400;
         }
+        return $this->makeResponse($data, $status);
+    }
+
+    private function makeResponse($data, $status) {
         $this->response->getBody()->write($data);
         return $this->response
                     ->withHeader('Content-Type', 'application/json')
