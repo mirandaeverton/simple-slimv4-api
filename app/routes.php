@@ -40,34 +40,34 @@ return function (App $app) {
         });
     });
 
-    // '/post' routes
+    // '/user' routes
     $app->group('/user', function (Group $group) {
-        // require __DIR__ . '/../src/api/post/PostController.php';
+        require __DIR__ . '/../src/api/user/UserController.php';
 
         $group->get('', function (Request $request, Response $response) {
-            // $postController = new PostController($request, $response);
-            // return $postController->getAll();
+            $userController = new UserController($request, $response);
+            return $userController->getAll();
         });
 
         // In Slim v3 the args passed in the URI are not designed by ":" but placed inside {}
         $group->get('/{id}', function (Request $request, Response $response, $args) {
-            // $postController = new PostController($request, $response, $args);
-            // return $postController->getSingle();
+            $userController = new UserController($request, $response, $args);
+            return $userController->getSingle();
         });
 
         $group->post('', function (Request $request, Response $response) {
-            // $postController = new PostController($request, $response);
-            // return $postController->create();
+            $userController = new UserController($request, $response);
+            return $userController->create();
         });
 
         $group->put('/{id}', function (Request $request, Response $response, $args) {
-            // $postController = new PostController($request, $response, $args);
-            // return $postController->update();
+            $userController = new UserController($request, $response, $args);
+            return $userController->update();
         });
 
         $group->delete('/{id}', function (Request $request, Response $response, $args) {
-            // $postController = new PostController($request, $response, $args);
-            // return $postController->delete($id);
+            $userController = new UserController($request, $response, $args);
+            return $userController->delete($id);
         });
     });
 };
