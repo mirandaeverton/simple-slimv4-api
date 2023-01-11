@@ -1,25 +1,45 @@
 <?php
 
-class UserMigrations {
+class UserMigrations
+{
 
-    public function initiateDatabase($database) {
-        this->createUsertable($database);
-        // Create system admin
-        this->createUser('admin', 'admin', 'admin@test.com', true);
-        // Create system simple user
-        this->createUser('user', 'user', 'user@test.com', false);
+    public function __construct() {
+        include_once __DIR__ . Database.php;
+        
+        $database = new Database();
+        $conn = $database->connect();
+        initiateDatabase($conn);
     }
 
-    public function createUsertable($database) {
-        $query = 'CREATE TABLE IF NOT EXISTS`users` (
-                `id` int(11) NOT NULL AUTO_INCREMENT,
-                `name` varchar(255) NOT NULL,
-                `password` varchar(255) NOT NULL,
-                `email` varchar(255) NOT NULL,
-                `isAdmin` boolean NOT NULL,
-                `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                PRIMARY KEY (`id`)
-            )';
+    public function initiateDatabase($database)
+    {
+
+        if (this->createUsertable($database)) {
+            echo "Table users created successfully";
+        }
+
+        // Create system admin
+        if (this->createUser('admin', 'admin', 'admin@test.com', true)) {
+            echo "Admin user created successfully";
+        }
+
+        // Create system simple user
+        if (this->createUser('user', 'user', 'user@test.com', false)) {
+            echo "Simple user created successfully";
+        }
+
+    }
+
+    private function createUsertable($database)
+    {
+        $query = 'CREATE TABLE IF NOT EXISTS users (
+                id int(11) NOT NULL AUTO_INCREMENT,
+                name varchar(255) NOT NULL,
+                password varchar(255) NOT NULL,
+                email varchar(255) NOT NULL,
+                isAdmin boolean NOT NULL,
+                created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY (id))';
 
         // Prepare statement
         $stmt = $database->prepare($query);
@@ -28,14 +48,11 @@ class UserMigrations {
         $stmt->execute();
     }
 
-    public function createUser($name, $password, $email, $isAdmin) {
-        $query = 'INSERT INTO `users`
-                    SET
-                        name = :name,
-                        password = :password,
-                        email = :email,
-                        isAdmin = :isAdmin';
-        
+    private function createUser($name, $password, $email, $isAdmin)
+    {
+        $query = "INSERT INTO users (name, password, email, isAdmin) 
+                    VALUES ($name, $password, $email, $isAdmin)"; 
+
         // Prepare statement
         $stmt = $database->prepare($query);
 
