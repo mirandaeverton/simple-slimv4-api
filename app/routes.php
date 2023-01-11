@@ -39,4 +39,35 @@ return function (App $app) {
             return $postController->delete($id);
         });
     });
+
+    // '/post' routes
+    $app->group('/user', function (Group $group) {
+        // require __DIR__ . '/../src/api/post/PostController.php';
+
+        $group->get('', function (Request $request, Response $response) {
+            // $postController = new PostController($request, $response);
+            // return $postController->getAll();
+        });
+
+        // In Slim v3 the args passed in the URI are not designed by ":" but placed inside {}
+        $group->get('/{id}', function (Request $request, Response $response, $args) {
+            // $postController = new PostController($request, $response, $args);
+            // return $postController->getSingle();
+        });
+
+        $group->post('', function (Request $request, Response $response) {
+            // $postController = new PostController($request, $response);
+            // return $postController->create();
+        });
+
+        $group->put('/{id}', function (Request $request, Response $response, $args) {
+            // $postController = new PostController($request, $response, $args);
+            // return $postController->update();
+        });
+
+        $group->delete('/{id}', function (Request $request, Response $response, $args) {
+            // $postController = new PostController($request, $response, $args);
+            // return $postController->delete($id);
+        });
+    });
 };

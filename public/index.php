@@ -7,7 +7,7 @@ require __DIR__ . '/../vendor/autoload.php';
 $app = AppFactory::create();
 
 // ROUTES
-$routes = require __DIR__ . '\..\app\routes.php';
+$routes = require __DIR__ . '/../app/routes.php';
 $routes($app);
 
 $app->addRoutingMiddleware();
