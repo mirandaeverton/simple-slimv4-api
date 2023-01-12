@@ -70,4 +70,10 @@ return function (App $app) {
             return $userController->delete($id);
         });
     });
+
+    $app->post('/login', function (Request $request, Response $response) {
+        require __DIR__ . '/../src/api/login/LoginController.php';
+        $loginController = new LoginController($request, $response);
+        return $loginController->login();
+    });
 };

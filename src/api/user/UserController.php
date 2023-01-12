@@ -7,7 +7,7 @@ class UserController
     private $args;
     private $user;
 
-    public function __construct($request, $response, $args = null)
+    public function __construct($request = null, $response = null, $args = null)
     {
         include_once  __DIR__ . '\..\..\models\User.php';
 
@@ -78,6 +78,39 @@ class UserController
             $status = 404;
         }
         return $this->makeResponse($data, $status);
+    }
+
+    /*
+     * @Param $userName string
+     * @param $userPassword 
+    */
+    public function getSingleByNameAndPassword($userName, $userPassword) {
+        
+        $result = $this->user->read_single_by_name_and_password($userName, $userPassword);
+
+        $num = $result->rowCount();
+
+        if ($num > 0) {
+            $user_arr = array();
+
+            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                extract($row);
+
+                $user_item = array(
+                    'id' => $id,
+                    'name' => $name,
+                    'email' => $email,
+                    'isAdmin' => $isAdmin,
+                );
+            }
+            $user_arr['data'] = $user_item;
+            $user_arr['status'] = 200;
+        } else {
+            $user_arr['data'] = array('message' => "Invalid name and password combination!");
+            $user_arr['status'] = 400;
+        }
+
+        return $user_arr;
     }
 
     public function create()

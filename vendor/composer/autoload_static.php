@@ -43,6 +43,7 @@ class ComposerStaticInit154a20388eb0c78ca86c2f227bf99ef8
         'S' => 
         array (
             'Symfony\\Polyfill\\Php80\\' => 23,
+            'StellaMaris\\Clock\\' => 18,
             'Slim\\Tests\\' => 11,
             'Slim\\Psr7\\' => 10,
             'Slim\\Http\\' => 10,
@@ -54,6 +55,7 @@ class ComposerStaticInit154a20388eb0c78ca86c2f227bf99ef8
             'Psr\\Http\\Server\\' => 16,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
+            'Psr\\Clock\\' => 10,
             'Prophecy\\PhpUnit\\' => 17,
             'Prophecy\\' => 9,
             'PhpParser\\' => 10,
@@ -65,6 +67,8 @@ class ComposerStaticInit154a20388eb0c78ca86c2f227bf99ef8
         ),
         'L' => 
         array (
+            'Lcobucci\\JWT\\' => 13,
+            'Lcobucci\\Clock\\' => 15,
             'Laminas\\Diactoros\\' => 18,
         ),
         'H' => 
@@ -97,8 +101,8 @@ class ComposerStaticInit154a20388eb0c78ca86c2f227bf99ef8
         'phpDocumentor\\Reflection\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
-            1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
-            2 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
         ),
         'Webmozart\\Assert\\' => 
         array (
@@ -107,6 +111,10 @@ class ComposerStaticInit154a20388eb0c78ca86c2f227bf99ef8
         'Symfony\\Polyfill\\Php80\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
+        ),
+        'StellaMaris\\Clock\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/stella-maris/clock/src',
         ),
         'Slim\\Tests\\' => 
         array (
@@ -135,12 +143,16 @@ class ComposerStaticInit154a20388eb0c78ca86c2f227bf99ef8
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'Psr\\Clock\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/clock/src',
         ),
         'Prophecy\\PhpUnit\\' => 
         array (
@@ -161,6 +173,14 @@ class ComposerStaticInit154a20388eb0c78ca86c2f227bf99ef8
         'Nyholm\\Psr7Server\\' => 
         array (
             0 => __DIR__ . '/..' . '/nyholm/psr7-server/src',
+        ),
+        'Lcobucci\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/lcobucci/jwt/src',
+        ),
+        'Lcobucci\\Clock\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/lcobucci/clock/src',
         ),
         'Laminas\\Diactoros\\' => 
         array (

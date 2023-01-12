@@ -48,7 +48,7 @@ class User
                         isAdmin
                     FROM
                         ' . $this->table . '
-                    WHERE 
+                    WHERE
                         id = :id
                     LIMIT 0,1';
 
@@ -63,7 +63,8 @@ class User
         return $stmt;
     }
 
-    public function create() {
+    public function create()
+    {
         $query = 'INSERT INTO ' . $this->table . '
             SET
                 name = :name,
@@ -83,7 +84,7 @@ class User
         $stmt->bindParam(':email', $this->email);
         $stmt->bindParam(':isAdmin', $this->isAdmin);
 
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             return true;
         }
 
@@ -93,7 +94,8 @@ class User
 
     }
 
-    public function update() {
+    public function update()
+    {
 
         $query = 'UPDATE ' . $this->table . '
             SET
@@ -118,9 +120,11 @@ class User
         $stmt->bindParam(':email', $this->email);
         $stmt->bindParam(':isAdmin', $this->isAdmin);
 
-        if(!$this->checkIfUsertExists()) return false;
+        if (!$this->checkIfUsertExists()) {
+            return false;
+        }
 
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             return true;
         }
 
@@ -130,7 +134,8 @@ class User
 
     }
 
-    public function delete() {
+    public function delete()
+    {
 
         $this->id = htmlspecialchars(strip_tags($this->id));
 
@@ -142,9 +147,11 @@ class User
 
         $stmt->bindParam(':id', $this->id);
 
-        if(!$this->checkIfUsertExists()) return false;
+        if (!$this->checkIfUsertExists()) {
+            return false;
+        }
 
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             return true;
         }
 
@@ -153,7 +160,34 @@ class User
         return false;
     }
 
-    private function checkIfUsertExists() {
+    public function read_single_by_name_and_password($userName, $userPassword)
+    {
+        $query = 'SELECT
+                    name,
+                    id,
+                    email,
+                    isAdmin
+                FROM
+                    ' . $this->table . '
+                WHERE
+                    name = :name AND
+                    password = :password
+                LIMIT 0,1';
+
+// Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':name', $userName);
+        $stmt->bindParam(':password', $userPassword);
+
+// Execute query
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+    private function checkIfUsertExists()
+    {
 
         $query = 'SELECT id FROM ' . $this->table . '
                     WHERE id = :id';
@@ -162,7 +196,7 @@ class User
         $this->id = htmlspecialchars(strip_tags($this->id));
         $stmt->bindParam(':id', $this->id);
         $stmt->execute();
-        if($stmt->rowCount() > 0){
+        if ($stmt->rowCount() > 0) {
             return true;
         }
 
