@@ -9,6 +9,7 @@ class LoginController
     private $userData;
     private $responseData;
     private $responseStatus;
+    private $token;
     private UserController $userController;
 
     public function __construct($request, $response)
@@ -72,13 +73,14 @@ class LoginController
     {
         if ($this->responseStatus == 200) {
             $authJWT = new AuthJWT();
-            $jwt = $authJWT->issueJWT($this->responseData['name'], $this->responseData['isAdmin']);
-            $this->responseData['token'] = $jwt;
+            $jwt = $authJWT->issueJWT($this->responseData);
+            $this->token = $jwt;
         }
     }
 
     private function makeResponse()
     {
+        setcookie('TEST', $this->token, array('httponly' => true));
         $this->response->getBody()->write(json_encode($this->responseData));
         return $this->response
             ->withHeader('Content-Type', 'application/json')

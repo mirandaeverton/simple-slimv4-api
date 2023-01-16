@@ -76,4 +76,16 @@ return function (App $app) {
         $loginController = new LoginController($request, $response);
         return $loginController->login();
     });
+
+    $app->post('/validate/token', function (Request $request, Response $response) {
+        require __DIR__ . '/TestToken.php';
+        $testToklen = new TestToken($request, $response);
+        return $testToklen->validateToken();
+    });
+
+    $app->post('/validate/permissions', function (Request $request, Response $response) {
+        require __DIR__ . '/TestToken.php';
+        $testToklen = new TestToken($request, $response);
+        return $testToklen->validatePermissions();
+    });
 };

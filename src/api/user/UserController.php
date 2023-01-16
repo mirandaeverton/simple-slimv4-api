@@ -98,9 +98,6 @@ class UserController
 
                 $user_item = array(
                     'id' => $id,
-                    'name' => $name,
-                    'email' => $email,
-                    'isAdmin' => $isAdmin,
                 );
             }
             $user_arr['data'] = $user_item;
