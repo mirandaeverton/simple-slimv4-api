@@ -8,6 +8,8 @@ use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 require_once __DIR__ . '\..\src\middleware\AuthenticationMiddleware.php';
+require_once __DIR__ . '\..\src\middleware\AuthorizationMiddleware.php';
+
 
 return function (App $app) {
     
@@ -29,17 +31,17 @@ return function (App $app) {
         $group->post('', function (Request $request, Response $response) {
             $postController = new PostController($request, $response);
             return $postController->create();
-        });
+        })->add(AuthorizationMiddleware::class);
 
         $group->put('/{id}', function (Request $request, Response $response, $args) {
             $postController = new PostController($request, $response, $args);
             return $postController->update();
-        });
+        })->add(AuthorizationMiddleware::class);
 
         $group->delete('/{id}', function (Request $request, Response $response, $args) {
             $postController = new PostController($request, $response, $args);
             return $postController->delete($id);
-        });
+        })->add(AuthorizationMiddleware::class);
     })->add(AuthenticationMiddleware::class);
 
     // '/user' routes
@@ -60,34 +62,22 @@ return function (App $app) {
         $group->post('', function (Request $request, Response $response) {
             $userController = new UserController($request, $response);
             return $userController->create();
-        });
+        })->add(AuthorizationMiddleware::class);
 
         $group->put('/{id}', function (Request $request, Response $response, $args) {
             $userController = new UserController($request, $response, $args);
             return $userController->update();
-        });
+        })->add(AuthorizationMiddleware::class);
 
         $group->delete('/{id}', function (Request $request, Response $response, $args) {
             $userController = new UserController($request, $response, $args);
             return $userController->delete($id);
-        });
+        })->add(AuthorizationMiddleware::class);
     })->add(AuthenticationMiddleware::class);
 
     $app->post('/login', function (Request $request, Response $response) {
         require __DIR__ . '/../src/api/login/LoginController.php';
         $loginController = new LoginController($request, $response);
         return $loginController->login();
-    });
-
-    $app->post('/validate/token', function (Request $request, Response $response) {
-        require __DIR__ . '/TestToken.php';
-        $testToklen = new TestToken($request, $response);
-        return $testToklen->validateToken();
-    });
-
-    $app->post('/validate/permissions', function (Request $request, Response $response) {
-        require __DIR__ . '/TestToken.php';
-        $testToklen = new TestToken($request, $response);
-        return $testToklen->validatePermissions();
     });
 };

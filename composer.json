@@ -73,7 +73,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Slim\\": "Slim"
+            "Slim\\": "Slim",
+            "Src\\": "src"
         }
     },
     "autoload-dev": {

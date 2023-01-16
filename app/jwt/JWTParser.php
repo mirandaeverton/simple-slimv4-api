@@ -15,8 +15,9 @@ class JWTParser
 
         try {
             self::$token = self::$parser->parse($tokenString);
-        } catch (CannotDecodeContent | InvalidTokenStructure | UnsupportedHeaderFound $e) {
-            echo 'Oh no, an error: ' . $e->getMessage();
+        } catch (\Throwable $e) {
+           echo 'You must pass a valid token!';
+           die();
         }
         assert(self::$token instanceof Token);
 

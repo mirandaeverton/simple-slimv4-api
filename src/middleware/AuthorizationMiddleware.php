@@ -1,6 +1,4 @@
 <?php
-declare(strict_types=1);
-namespace Src\Middleware;
 
 use Slim\Psr7\Response;
 use Psr\Http\Message\ResponseInterface as ResponseInterface;
@@ -8,17 +6,16 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface as Middleware;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
-require __DIR__ . '\..\..\app\AuthJWT.php';
+require __DIR__ . '\..\..\app\jwt\JWTAdminsValidator.php';
 
-class AuthorizationMiddleware
+class AuthorizationMiddleware //implements Middleware
 {
-    public function process(Request $request, RequestHandler $handler): ResponseInterface
+    public function __invoke(Request $request, RequestHandler $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-        $authJWT = new AuthJWT();
 
         try {
-            $authJWT->validateJWTPermissions($request);
+            JWTAdminsValidator::validateJWTPermissions($request);
         } catch (\Throwable $e) {
             $response = new Response();
             $response->getBody()->write($e->getMessage());

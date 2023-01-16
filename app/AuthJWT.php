@@ -22,24 +22,28 @@ require_once __DIR__ . '\..\src\models\User.php';
 
 class AuthJWT
 {
-    private Builder $tokenBuilder;
-    private $algorithm;
-    private InMemory  $signingKey;
-    private $validator;
+    private static Builder $tokenBuilder;
+    private static $algorithm;
+    private static InMemory  $signingKey;
+    private static $validator;
 
-    public function __construct()
-    {
-        $this->algorithm = new Sha256();
-        $this->signingKey = InMemory::plainText('ARTSOFT');
-        $this->validator = new Validator();
-    }
+    // public function __construct()
+    // {
+    //     self::$algorithm = new Sha256();
+    //     self::$signingKey = InMemory::plainText('ARTSOFT');
+    //     self::$validator = new Validator();
+    // }
 
-    public function issueJWT($claims)
+    public static function issueJWT($claims)
     {
-        $this->$tokenBuilder = new Builder(new JoseEncoder(), ChainedFormatter::default());
+        self::$algorithm = new Sha256();
+        self::$signingKey = InMemory::plainText('ARTSOFT');
+        self::$validator = new Validator();
+
+        $tokenBuilder = new Builder(new JoseEncoder(), ChainedFormatter::default());
 
         $now = new DateTimeImmutable();
-        $token = $this->$tokenBuilder
+        $token = $tokenBuilder
         // Configures the time that the token was issue (iat claim)
             ->issuedAt($now)
         // Configures the expiration time of the token (exp claim)
@@ -47,11 +51,11 @@ class AuthJWT
         // Configures a new claim, called "isAdmin"
             ->withClaim('id', $claims['id'])
         // Builds a new token
-            ->getToken($this->algorithm, $this->signingKey);
+            ->getToken(self::$algorithm, self::$signingKey);
         return $token->toString();
     }
 
-    public function parseJWT($tokenString)
+    public static function parseJWT($tokenString)
     {
         $parser = new Parser(new JoseEncoder());
 
@@ -65,11 +69,15 @@ class AuthJWT
         return $token;
     }
 
-    public function validateJWT($request)
+    public static function validateJWT($request)
     {
-        $tokenString = $this->getTokenFromCookies($request);
+        self::$algorithm = new Sha256();
+        self::$signingKey = InMemory::plainText('ARTSOFT');
+        self::$validator = new Validator();
+
+        $tokenString = self::getTokenFromCookies($request);
         
-        $token = $this->parseJWT($tokenString);
+        $token = self::parseJWT($tokenString);
         if (!$token instanceof Token\Plain) {
             throw new ConstraintViolation('You should pass a plain token!');
         }
@@ -77,9 +85,9 @@ class AuthJWT
         /**
          * 1. Verificar se foi assinado com a mesma chave
          */
-        $signer = new SignedWith($this->algorithm, $this->signingKey);
+        $signer = new SignedWith(self::$algorithm, self::$signingKey);
         
-        if (!$this->validator->validate($token, $signer)) {
+        if (!self::$validator->validate($token, $signer)) {
             throw new ConstraintViolation('Error! Token has an invalid signature!');
         }
         
@@ -101,8 +109,12 @@ class AuthJWT
         return true;
     }
 
-    public function validateJWTPermissions($tokenString) {
-        $token = $this->parseJWT($tokenString);
+    public static function validateJWTPermissions($request) 
+    {
+
+        $tokenString = self::getTokenFromCookies($request);
+
+        $token = self::parseJWT($tokenString);
         if (!$token instanceof Token\Plain) {
             throw new ConstraintViolation('You should pass a plain token');
         }
@@ -132,7 +144,7 @@ class AuthJWT
         return true;
     }
 
-    public function getTokenFromCookies($request) {
+    public static function getTokenFromCookies($request) {
         return $request->getCookieParams()['TEST'];
     }
 }

@@ -26,8 +26,8 @@ class JTWValidator
         self::$validator = new Validator();
 
         $tokenString = $request->getCookieParams()['TEST'];
-        
         self::$token = JWTParser::parseJWT($tokenString);
+
         if (! self::$token instanceof Token\Plain) {
             throw new ConstraintViolation('You should pass a plain token!');
         }

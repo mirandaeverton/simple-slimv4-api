@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '\..\..\..\app\AuthJWT.php';
+require_once __DIR__ . '\..\..\..\app\jwt\JWTIssuer.php';
 
 class LoginController
 {
@@ -72,8 +72,7 @@ class LoginController
     private function generateJWT(): void 
     {
         if ($this->responseStatus == 200) {
-            $authJWT = new AuthJWT();
-            $jwt = $authJWT->issueJWT($this->responseData);
+            $jwt = JWTIssuer::issueJWT($this->responseData);
             $this->token = $jwt;
         }
     }

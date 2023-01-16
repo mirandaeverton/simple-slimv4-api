@@ -10,6 +10,7 @@ return array(
     'Webmozart\\Assert\\' => array($vendorDir . '/webmozart/assert/src'),
     'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
     'StellaMaris\\Clock\\' => array($vendorDir . '/stella-maris/clock/src'),
+    'Src\\' => array($baseDir . '/src'),
     'Slim\\Tests\\' => array($baseDir . '/tests'),
     'Slim\\Psr7\\' => array($vendorDir . '/slim/psr7/src'),
     'Slim\\Http\\' => array($vendorDir . '/slim/http/src'),
