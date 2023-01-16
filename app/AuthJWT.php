@@ -65,11 +65,13 @@ class AuthJWT
         return $token;
     }
 
-    public function validateJWT($tokenString)
+    public function validateJWT($request)
     {
+        $tokenString = $this->getTokenFromCookies($request);
+        
         $token = $this->parseJWT($tokenString);
         if (!$token instanceof Token\Plain) {
-            throw new ConstraintViolation('You should pass a plain token');
+            throw new ConstraintViolation('You should pass a plain token!');
         }
         
         /**
@@ -85,7 +87,7 @@ class AuthJWT
          * 2. Verificar se tem expiration date
          */
         if(! $token->claims()->get('exp')) {
-            throw new ConstraintViolation('Invalid token! It has no expiration date');
+            throw new ConstraintViolation('Invalid token! It has no expiration date!');
         }
         
         /**
@@ -93,7 +95,7 @@ class AuthJWT
          */
         $now = new DateTimeImmutable();
         if ($token->isExpired($now)) {
-            throw new ConstraintViolation('Token has expired');
+            throw new ConstraintViolation('Token has expired!');
         }
 
         return true;
@@ -128,5 +130,9 @@ class AuthJWT
         }
 
         return true;
+    }
+
+    public function getTokenFromCookies($request) {
+        return $request->getCookieParams()['TEST'];
     }
 }

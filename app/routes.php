@@ -7,6 +7,8 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
+require_once __DIR__ . '\..\src\middleware\AuthenticationMiddleware.php';
+
 return function (App $app) {
     
     // '/post' routes
@@ -38,7 +40,7 @@ return function (App $app) {
             $postController = new PostController($request, $response, $args);
             return $postController->delete($id);
         });
-    });
+    })->add(AuthenticationMiddleware::class);
 
     // '/user' routes
     $app->group('/user', function (Group $group) {
@@ -69,7 +71,7 @@ return function (App $app) {
             $userController = new UserController($request, $response, $args);
             return $userController->delete($id);
         });
-    });
+    })->add(AuthenticationMiddleware::class);
 
     $app->post('/login', function (Request $request, Response $response) {
         require __DIR__ . '/../src/api/login/LoginController.php';
